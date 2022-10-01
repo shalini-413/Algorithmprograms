@@ -1,0 +1,70 @@
+#include<iostream>
+#include<fstream>
+#include<cstdlib>
+using namespace std;
+template<class T>
+class insorting{
+    public:
+    T array[400];
+    T n;
+    void input();
+    void display();
+    int insort();
+};
+
+template<class T> void insorting<T> :: input(){
+    int i;
+    cout << "\nEnter the number of elements in the array : ";
+    cin >> n;
+    for(int i = 1; i <= n; i++){
+        array[i] = rand() % 100;
+    }
+}
+
+template<class T> int insorting<T> :: insort(){
+    int i, j, count = 0;
+    T temp;
+    for(int i = 2; i <= n; i++){
+        temp = array[i];
+        j = i - 1;
+        while(j > 0 && array[j] > temp){
+            array[j + 1] = array[j];
+            j--;
+            count++;
+        }
+        count++;
+        array[j + 1] = temp;
+    }
+    cout << "\nArray After Sorting ios : ";
+    display();
+    cout << "\nThe number of comparisons are : " << count;
+    return count;
+}
+
+template<class T> void insorting<T> :: display(){
+    for(int i = 1; i <= n; i++){
+        cout << array[i] << " ";
+    }
+    cout << endl;
+}
+
+int main(){
+    ofstream f("DAA_insort.csv");
+    int c;
+    char ch;
+    do{
+    insorting<int> I;
+    I.input();
+    cout << "\n The elements of the array are : \n";
+    I.display();
+    c = I.insort();
+    if(f){
+        f <<I.n << "," <<c;
+        f << endl;
+    }
+    cout << "\nDo you want to continue (y/Y)? ";
+    cin >> ch;
+    }while(ch == 'y' || ch == 'Y');
+    f.close();
+    return 0;
+}
