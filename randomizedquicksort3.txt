@@ -1,0 +1,89 @@
+#include <iostream>
+#include<fstream>
+#include<stdlib.h>
+#include <climits>
+using namespace std;
+template <class T>
+class QSorting{
+    T arr[1000];
+public:
+    int n, count;
+    void input();
+    void Randomized_quick(T arr[], int p, int r);
+    int Randomized_partition(T arr[], int p, int r, int n);
+    int Partition(T A[], int p, int r);
+    void display();
+};
+
+template <class T>
+void QSorting<T> :: input(){
+    count = 0;
+    cout << "Enter the number of elements : "<<endl;
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+        arr[i] = (rand()%1000);
+    Randomized_quick(arr, 1, n);
+}
+
+template <class T>
+int QSorting<T> :: Partition(T arr[], int p, int r){
+    int x, i, j, temp, temp2;
+    x = arr[r];
+    i = p - 1;
+    for(j = p; j < r; j++){
+        if(arr[j] <= x){
+            i++;
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            count++;
+        }
+    }
+    return (i + 1);
+}
+
+template <class T>
+void QSorting<T> :: Randomized_quick(T arr[], int p, int r){
+    int q;
+    if(p < r){
+        q = Randomized_partition(arr, p, r, n);
+        Randomized_quick(arr, p, q - 1);
+        Randomized_quick(arr, q + 1, r);
+    }
+}
+
+template <class T>
+int QSorting<T> :: Randomized_partition(T arr[], int p, int r, int n){
+    int i, temp;
+    i = p + rand()%(r - p + 1);
+    temp = arr[r];
+    arr[r] = arr[i];
+    return Partition(arr, p , r);
+}
+
+template <class T>
+void QSorting<T> :: display(){
+    for(int i = 1; i <= n; i++)
+    cout << arr[i] << "\t";
+    cout << endl;
+    cout << "Number of comparisons : " << count << endl;
+}
+
+int main(){
+    char ch='y';
+    QSorting <int> obj;
+    ofstream fout;
+    fout.open("Quick_Sort.csv");
+    fout << "n" << "," << "count";
+    fout << endl;
+    while(ch == 'y' || ch == 'Y'){
+        obj.input();
+        obj.display();
+        fout << obj.n << "," << obj.count;
+        fout << endl;
+        cout << "Do you want to continue then press(y/n)?? : " << endl;
+        cin>>ch;
+    }
+    fout.close();
+    return 0;
+}
